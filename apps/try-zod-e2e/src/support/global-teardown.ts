@@ -1,7 +1,19 @@
 /* eslint-disable */
 
+import fs from 'fs';
+import path from 'path';
+
 module.exports = async function () {
-  // Put clean up logic here (e.g. stopping services, docker-compose, etc.).
-  // Hint: `globalThis` is shared between setup and teardown.
-  console.log(globalThis.__TEARDOWN_MESSAGE__);
+    console.log(__dirname);
+    const testDbPath = path.resolve(__dirname, '../../../../prisma/test.db');
+    const testDbJournalPath = path.resolve(__dirname, '../../../../prisma/test.db-journal');
+
+    if (fs.existsSync(testDbPath)) {
+        fs.unlinkSync(testDbPath);
+    }
+
+    if (fs.existsSync(testDbJournalPath)) {
+        fs.unlinkSync(testDbJournalPath);
+    }
+
 };

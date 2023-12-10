@@ -1,19 +1,24 @@
 import * as z from 'zod';
 import express, { ErrorRequestHandler } from 'express';
-import { createHandler } from '@try-zod/core';
+import { ValidationError, createHandler } from '@try-zod/core';
 import { router as userRouter } from '@try-zod/users';
 
 
-
 const zodErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  if (err instanceof z.ZodError) {
-    const formattedErrors = err.errors.map(error => `${error.path.join('.')}: ${error.message}`);
-    return res.status(400).json({
-      errors: formattedErrors,
-    });
-  }
+    if (err instanceof z.ZodError) {
+        const formattedErrors = err.errors.map(error => `${error.path.join('.')}: ${error.message}`);
+        return res.status(400).json({
+            errors: formattedErrors,
+        });
+    }
 
-  next(err);
+    if (err instanceof ValidationError) {
+        return res.status(400).json({
+            errors: [err.message],
+        });
+    }
+
+    next(err);
 };
 
 const defaultErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
@@ -30,7 +35,7 @@ app.use(userRouter);
 
 
 app.get('/', createHandler({
-    handler: (req, res) => {
+    handler: async (req, res) => {
       res.send({ message: 'Hello API' });
     }
 }));

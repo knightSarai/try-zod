@@ -17,7 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@try-zod/core": ["libs/core/src/index.ts"],
-      "@try-zod/users": ["libs/users/src/index.ts"]
+      "@try-zod/users": ["libs/users/src/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]
