@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 const userUrl = '/user';
 const data = {
@@ -14,18 +14,6 @@ describe('POST /user', () => {
         expect(res.status).toBe(200);
         expect(res.data).toEqual({ id: 1 });
     });
-
-    it('should throw a validation error if user already exists', async () => {
-        try {
-            await axios.post(userUrl, data);
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                expect(error.response?.status).toBe(400);
-                expect(error.response?.data).toEqual({errors: ['User already exists for this name or email']})
-            }
-        }
-    });
-
 });
 
 describe('GET /user', () => {

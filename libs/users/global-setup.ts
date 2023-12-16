@@ -1,17 +1,9 @@
 /* eslint-disable */
-import fs from 'fs';
-import { execSync, exec } from 'child_process';
-import path from 'path';
+import { execSync } from 'child_process';
 import { PrismaClient } from '@prisma/client';
 
 
 module.exports = async function () {
-    const testDbPath = path.resolve(__dirname, '../../../../prisma/test.db');
-
-    if (fs.existsSync(testDbPath)) {
-        fs.unlinkSync(testDbPath);
-    }
-
     const prisma = new PrismaClient();
 
     try {
