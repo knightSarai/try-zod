@@ -2,18 +2,13 @@ import express from 'express';
 import request from 'supertest';
 import { router } from './api';
 
-import { getPrismaClient } from '@try-zod/core';
-
+import { getPrismaClient, createApp } from '@try-zod/core';
 
 
 describe('test test', () => {
     let app: express.Application;
 
-    beforeAll(() => {
-        app = express();
-        app.use(express.json());
-        app.use(router);
-    });
+    beforeAll(() => app = createApp([router]));
 
     it('should create a user', async () => {
         const res = await request(app)
@@ -30,8 +25,7 @@ describe('test test', () => {
     });
 
     it('should get users', async () => {
-        const response = await request(app)
-            .get('/user')
+        const response = await request(app).get('/user')
 
         expect(response.body.users.length).toBe(1);
         expect(response.body.users[0].name).toBe('John Doe');
