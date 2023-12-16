@@ -23,8 +23,8 @@ export function createHandler<T extends z.ZodType<any, any> = typeof defaultSche
 ): RequestHandler {
     const { schema = defaultSchema, handler } = config;
     return async (req, res, next) => {
-        req.schema = schema.parse(req.body);
         try {
+            req.schema = schema.parse(req.body);
             await handler(req as RequestWithSchema<z.infer<T>>, res, next);
         } catch (error) {
             next(error);
